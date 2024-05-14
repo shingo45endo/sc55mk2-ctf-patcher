@@ -1,0 +1,22 @@
+{
+  "name": "sc55mk2-ctf-patcher",
+  "version": "0.1.0",
+  "description": "A tool to modify SC-55mkII firmware to support Capital Tone Fallback. (CTF)",
+  "type": "module",
+  "scripts": {
+    "lint": "eslint *.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/shingo45endo/sc55mk2-ctf-patcher.git"
+  },
+  "author": "shingo45endo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/shingo45endo/sc55mk2-ctf-patcher/issues"
+  },
+  "homepage": "https://github.com/shingo45endo/sc55mk2-ctf-patcher#readme",
+  "devDependencies": {
+    "eslint": "^8.57.0"
+  }
+}
