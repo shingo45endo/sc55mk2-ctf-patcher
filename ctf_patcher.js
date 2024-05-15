@@ -1,6 +1,11 @@
 export function modifyToneTable(allBytes) {
 	console.assert(allBytes instanceof Uint8Array);
 
+	// Checks the size of the firmware ROM.
+	if (allBytes.length < 0x038000) {
+		throw new Error('The firmware ROM size is too small.');
+	}
+
 	// Reads original tone tables.
 	const bytes = allBytes.subarray(0x030000, 0x038000);
 	const tableTones = convertToUint16BEArray(bytes).reduce((p, _, i, a) => {
@@ -35,6 +40,11 @@ export function modifyToneTable(allBytes) {
 
 export function modifyDrumTable(allBytes) {
 	console.assert(allBytes instanceof Uint8Array);
+
+	// Checks the size of the firmware ROM.
+	if (allBytes.length < 0x038080) {
+		throw new Error('The firmware ROM size is too small.');
+	}
 
 	// Reads an original drum table.
 	const tableDrumSets = allBytes.subarray(0x038000, 0x038080);
