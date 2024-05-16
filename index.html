@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html class="h-100">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>sc55mk2-ctf-patcher</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script type="module">
+/* global bootstrap */
+/* eslint no-alert: 'off' */
+import {modifyToneTable, modifyDrumTable} from './ctf_patcher.js';
+import {marked} from 'https://cdn.jsdelivr.net/npm/marked/+esm';
+
+window.addEventListener('DOMContentLoaded', () => {
+	// Loads README.md and renders it.
+	(async () => {
+		const res = await fetch('./README.md');
+		if (res.ok) {
+			const text = await res.text();
+			document.getElementById('my-readme').innerHTML = marked(text, {headerIds: false});
+			document.querySelector('#my-readme h1').remove();
+		}
+	})();
+
+	// Handles file input related events.
+	document.getElementById('my-choosefile').addEventListener('change', async (e) => {
+		await downloadModifiedFirmwareFile(e.currentTarget.files[0]);
+	});
+
+	// Handles D&D related events.
+	const elemDropArea = document.getElementById('my-droparea');
+	let counter = 0;
+	document.addEventListener('dragenter', (e) => {
+		e.preventDefault();
+
+		if (counter <= 0) {
+			console.assert(counter === 0);
+			elemDropArea.classList.add('my-droppable');
+		}
+		counter++;
+	});
+	document.addEventListener('dragleave', (e) => {
+		e.preventDefault();
+
+		counter--;
+		if (counter <= 0) {
+			console.assert(counter === 0);
+			elemDropArea.classList.remove('my-droppable');
+		}
+	});
+	document.addEventListener('dragover', (e) => {
+		e.preventDefault();
+	});
+	document.addEventListener('drop', async (e) => {
+		e.preventDefault();
+
+		console.assert(counter === 1);
+		counter = 0;
+		elemDropArea.classList.remove('my-droppable');
+
+		if ((e?.dataTransfer?.files?.length ?? 0) === 0) {
+			return;
+		}
+
+		await downloadModifiedFirmwareFile(e.dataTransfer.files[0]);
+	});
+
+	// Handles modifying firmware ROM and its download.
+	const bsDownloadModal = new bootstrap.Modal(document.getElementById('my-download-modal'));
+	async function downloadModifiedFirmwareFile(file) {
+		// Reads a firmware ROM file.
+		const bytes = new Uint8Array(await readFileAsync(file));
+
+		// Checks the size of the firmware ROM.
+		if (bytes.length % 0x40000 !== 0) {
+			if (!window.confirm('The input file size is not the correct firmware ROM size. Continue?')) {
+				return;
+			}
+		}
+
+		// Modifies the firmware ROM.
+		try {
+			modifyToneTable(bytes);
+			modifyDrumTable(bytes);
+
+		} catch (e) {
+			window.alert(e);
+			return;
+		}
+
+		// Prepares for download.
+		const blob = new Blob([bytes], {type: 'application/octet-stream'});
+		const fileName = `${file.name}.new`;
+
+		const elemDownload = document.getElementById('my-download');
+		elemDownload.href = window.URL.createObjectURL(blob);
+		elemDownload.textContent = fileName;
+		elemDownload.download = fileName;
+
+		// Shows the modal for download.
+		bsDownloadModal.show();
+	}
+
+	function readFileAsync(file) {
+		return new Promise((resolve, reject) => {
+			const reader = new FileReader();
+			reader.onload = () => resolve(reader.result);
+			reader.onerror = (e) => reject(e);
+			reader.readAsArrayBuffer(file);
+		});
+	}
+});
+</script>
+<style>
+.my-droppable {
+	background-color: rgba(0, 0, 0, 0.125);
+}
+</style>
+</head>
+<body class="h-100">
+	<!-- Navbar -->
+	<nav class="navbar navbar-light bg-light sticky-top">
+		<div class="container align-items-start">
+			<h1 class="h6"><a href="https://github.com/shingo45endo/sc55mk2-ctf-patcher" class="navbar-brand" target="_blank" rel="noopener noreferrer">sc55mk2-ctf-patcher</a></h1>
+		</div>
+	</nav>
+
+	<!-- Main screen -->
+	<main class="container my-3 h-100">
+		<div id="my-droparea" class="card h-50">
+			<div class="card-body d-flex align-items-center justify-content-center">
+				<form class="text-center">
+					<p class="card-text text-center">Drag and drop a firmware file of SC-55mkII<br>or</p>
+					<input id="my-choosefile" class="position-absolute invisible" type="file">
+					<label class="btn btn-primary" for="my-choosefile">Choose a file</label>
+				</form>
+			</div>
+		</div>
+		<div id="my-readme" class="mt-3"></div>
+	</main>
+
+	<!-- Download modal -->
+	<div id="my-download-modal" class="modal fade" data-bs-backdrop="static" tabindex="-1" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h2 class="modal-title h5">Download</h2>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+				</div>
+				<div class="modal-body">
+					<p class="text-center">
+						<a id="my-download" class="btn btn-primary" href="#" role="button">Download</a>
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
