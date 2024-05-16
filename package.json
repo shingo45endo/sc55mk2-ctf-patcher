@@ -4,7 +4,7 @@
   "description": "A tool to modify SC-55mkII firmware to support Capital Tone Fallback. (CTF)",
   "type": "module",
   "scripts": {
-    "lint": "eslint *.js"
+    "lint": "eslint {*.js,*.html}"
   },
   "repository": {
     "type": "git",
@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/shingo45endo/sc55mk2-ctf-patcher#readme",
   "devDependencies": {
-    "eslint": "^8.57.0"
+    "eslint": "^8.57.0",
+    "eslint-plugin-html": "^8.1.1"
   }
 }

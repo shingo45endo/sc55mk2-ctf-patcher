@@ -1,5 +1,6 @@
 {
 	"env": {
+		"browser": true,
 		"es2020": true,
 		"node": true
 	},
@@ -8,6 +9,9 @@
 		"ecmaVersion": 2020,
 		"sourceType": "module"
 	},
+	"plugins": [
+		"html"
+	],
 	"rules": {
 		"brace-style": ["error", "1tbs", {"allowSingleLine": true}],
 		"indent": ["error", "tab", {"ignoreComments": true}],
