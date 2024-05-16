@@ -66,7 +66,7 @@ Although not explicitly mentioned in the manual, the Alternate Voicings feature 
 * v1.21 or earlier: Program No. 1 to 64
 * v2.00: Program No. 1 to 48
 
-As for drum sets, the firmware ROM also has a table of 1 byte x 128 programs in the range of 0x030000-0x038000. Similar to the tone tables, if there is no drum set corresponding to the program number, 0xff is stored. This tool rewrites the table according to the behavior of firmware v1.21.
+As for drum sets, the firmware ROM also has a table of 1 byte x 128 programs in the range of 0x038000-0x038080. Similar to the tone tables, if there is no drum set corresponding to the program number, 0xff is stored. This tool rewrites the table according to the behavior of firmware v1.21.
 
 
 License
