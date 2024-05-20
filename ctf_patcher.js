@@ -638,7 +638,7 @@ const sc55tones = {
 	},
 };
 
-export function modifyToneTable(allBytes, compatMode = 'sc55mk2') {
+export function modifyToneTable(allBytes, compatMode = 'sc55') {
 	console.assert(allBytes instanceof Uint8Array);
 	console.assert(['strict-sc55', 'sc55', 'sc55mk2'].includes(compatMode));
 
