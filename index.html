@@ -81,8 +81,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
 		// Modifies the firmware ROM.
 		try {
-			modifyToneTable(bytes);
-			modifyDrumTable(bytes);
+			modifyToneTable(bytes, document.querySelector('input[name="compat-tone"]:checked').value);
+			modifyDrumTable(bytes, document.querySelector('input[name="compat-drum"]:checked').value);
 
 		} catch (e) {
 			window.alert(e);
@@ -137,6 +137,58 @@ window.addEventListener('DOMContentLoaded', () => {
 				</form>
 			</div>
 		</div>
+		<div class="row">
+			<div class="col-md-6">
+				<form>
+					<fieldset class="row">
+						<legend class="col-form-label">Compatibility Option (Tone):</legend>
+						<div class="col-12">
+							<div class="form-check">
+								<label class="form-check-label">
+									<input class="form-check-input" type="radio" name="compat-tone" value="strict-sc55">Strict SC-55 (Not recommended)
+								</label>
+							</div>
+						</div>
+						<div class="col-12">
+							<div class="form-check">
+								<label class="form-check-label">
+									<input class="form-check-input" type="radio" name="compat-tone" value="sc55" checked>SC-55 (Recommended)
+								</label>
+							</div>
+						</div>
+						<div class="col-12">
+							<div class="form-check">
+								<label class="form-check-label">
+									<input class="form-check-input" type="radio" name="compat-tone" value="sc55mk2">SC-55mkII
+								</label>
+							</div>
+						</div>
+					</fieldset>
+				</form>
+			</div>
+			<div class="col-md-6">
+				<form>
+					<fieldset class="row">
+						<legend class="col-form-label">Compatibility Option (Drum):</legend>
+						<div class="col-12">
+							<div class="form-check">
+								<label class="form-check-label">
+									<input class="form-check-input" type="radio" name="compat-drum" value="sc55v1" checked>SC-55 v1.21 or earlier (Recommended)
+								</label>
+							</div>
+						</div>
+						<div class="col-12">
+							<div class="form-check">
+								<label class="form-check-label">
+									<input class="form-check-input" type="radio" name="compat-drum" value="sc55v2">SC-55 v2.00
+								</label>
+							</div>
+						</div>
+					</fieldset>
+				</form>
+			</div>
+		</div>
+		<hr>
 		<div id="my-readme" class="mt-3"></div>
 	</main>
 
