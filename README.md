@@ -66,7 +66,47 @@ Although not explicitly mentioned in the manual, the Alternate Voicings feature 
 * v1.21 or earlier: Program No. 1 to 64
 * v2.00: Program No. 1 to 48
 
-As for drum sets, the firmware ROM also has a table of 1 byte x 128 programs in the range of 0x038000-0x038080. Similar to the tone tables, if there is no drum set corresponding to the program number, 0xff is stored. This tool rewrites the table according to the behavior of firmware v1.21.
+As for drum sets, the firmware ROM also has a table of 1 byte x 128 programs in the range of 0x038000-0x038080. Similar to the tone tables, if there is no drum set corresponding to the program number, 0xff is stored. By default, this tool rewrites the table according to the behavior of firmware v1.21.
+
+
+Compatibility options (Tone)
+----------------------------
+
+### Strict SC-55 (Not recommended)
+
+Even when a variation tone added in the SC-55mkII is selected, the Alternate Voicings is forcibly applied to replace with the original SC-55 capital tone. It is not recommend because the newly added tones in the SC-55mkII will become unavailable.
+
+### SC-55 (Recommended)
+
+The newly added tones in the SC-55mkII are selected as-is, and for non-existent tones, the same Alternate Voicings as the original SC-55 is applied. Considering both compatibility with the original SC-55 and the convenience as the SC-55mkII, it is the most convenient and recommended.
+
+### SC-55mkII
+
+This mode simulates that "if the SC-55mkII had implemented Alternate Voicings, it would have worked like this." 
+
+To give a specific example, when "Program No. 17 / Bank No. 18" is specified, the original SC-55 falls back to the capital tone ("Organ 1") because no tone is assigned to Bank No. 16 as sub-capital. However, in this mode, it falls back to "60's Organ 1" in Bank No. 16 (newly added in the SC-55mkII).
+
+Alternate Voicings were removed from the SC-55mkII, but subsequent Sound Canvas models had been continued to add new tones following the principle of assigning representative sub-capital tones to bank numbers that are multiples of 8. For the variation tones of "Organ 1" from Program No. 17 mentioned earlier, the SC-55mkII added "60's Organ 1" to Bank No. 16, and the SC-88 further added "60's Organ 2" and "60's Organ 3" to Bank No. 17 and 18.
+
+Using this mode might allow to fall back to more appropriate tones when playing SC-88 (or later) song data on the SC-55mkII, by substituting tones that exist only on the SC-88 with tones available on the SC-55mkII.
+
+However, the SC-88 introduced the concept of "Map". While maintaining upward compatibility by providing maps (such as the "SC-55 Map") that preserved the entire tones of previous Sound Canvas, downward compatibility was completely lost because the new maps contained new tones with entirely different characteristics, even if they have the same program or bank numbers. Therefore, the improvement in backward compatibility achieved by this mode will likely be minimal.
+
+
+Compatibility options (Drum)
+----------------------------
+
+### SC-55 v1.21 or earlier (Recommended)
+
+Apply Alternate Voicings to the range of drum set Program No. 1 to 64. Same as SC-55 v1.21 or earlier.
+
+A very small number of PC games mistakenly select the ORCHESTRA Set (Program No. 49) with No. 50 or 51, so considering this, this mode is recommended.
+
+### SC-55 v2.00
+
+Apply Alternate Voicings to the range of drum set only Program No. 1 to 48. Same as SC-55 v2.00.
+
+The reason why Alternate Voicings on v2.00 is no longer applied to drum set Program No. 49 through 64 has not been documented. This is just my guess, but at some point, policies may have been established that "Alternate Voicings should not be applied to drum sets incompatible with General MIDI (such as ORCHESTRA Set or SFX Set)" and "drum sets incompatible with General MIDI should be assigned to Program No. 49 or later." In fact, all of GM-incompatible drum sets added in models after the SC-88, such as the ETHNIC Set and KICK & SNARE Set, are assigned to Program No. 49 or later.
 
 
 License
