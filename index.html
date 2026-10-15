@@ -9,7 +9,7 @@
 <script type="module">
 /* global bootstrap */
 /* eslint no-alert: 'off' */
-import {modifyToneTable, modifyDrumTable} from './ctf_patcher.js';
+import {modifyToneTable, modifyDrumTable, updateChecksum} from './ctf_patcher.js';
 import {marked} from 'https://cdn.jsdelivr.net/npm/marked/+esm';
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -83,6 +83,7 @@ window.addEventListener('DOMContentLoaded', () => {
 		try {
 			modifyToneTable(bytes, document.querySelector('input[name="compat-tone"]:checked').value);
 			modifyDrumTable(bytes, document.querySelector('input[name="compat-drum"]:checked').value);
+			updateChecksum(bytes);
 
 		} catch (e) {
 			window.alert(e);

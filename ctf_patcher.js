@@ -718,6 +718,22 @@ export function modifyDrumTable(allBytes, compatMode = 'sc55v1') {
 	tableDrumSets.set(newTableDrumSets);
 }
 
+// The last big-endian word balances the 16-bit sum of the entire ROM to zero.
+export function updateChecksum(bytes) {
+	if (!(bytes instanceof Uint8Array) || bytes.length < 2 || bytes.length % 2 !== 0) {
+		throw new Error('The firmware ROM must contain an even number of bytes.');
+	}
+
+	let sum = 0;
+	for (let i = 0; i < bytes.length - 2; i += 2) {
+		sum = (sum + (bytes[i] << 8) + bytes[i + 1]) & 0xffff;
+	}
+	const checksum = (-sum) & 0xffff;
+	bytes[bytes.length - 2] = checksum >>> 8;
+	bytes[bytes.length - 1] = checksum & 0xff;
+	return checksum;
+}
+
 function convertToUint16BEArray(bytes) {
 	console.assert(bytes instanceof Uint8Array && bytes.length % 2 === 0);
 

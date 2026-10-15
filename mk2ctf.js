@@ -3,7 +3,7 @@ import util from 'node:util';
 import process from 'node:process';
 import assert from 'node:assert';
 
-import {modifyToneTable, modifyDrumTable} from './ctf_patcher.js';
+import {modifyToneTable, modifyDrumTable, updateChecksum} from './ctf_patcher.js';
 
 console.assert = assert;
 
@@ -46,6 +46,7 @@ try {
 	if (values.drum !== 'thru') {
 		modifyDrumTable(bytes, values.drum);
 	}
+	updateChecksum(bytes);
 
 	// Writes a modified firmware ROM file.
 	fs.writeFileSync(outputFile ?? `${inputFile}.new`, bytes);

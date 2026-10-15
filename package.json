@@ -4,7 +4,8 @@
   "description": "A tool to modify SC-55mkII firmware to support Capital Tone Fallback. (CTF)",
   "type": "module",
   "scripts": {
-    "lint": "eslint {*.js,*.html}"
+    "lint": "eslint {*.js,*.html}",
+    "test": "node --test"
   },
   "repository": {
     "type": "git",

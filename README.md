@@ -32,6 +32,7 @@ How to Use
 
 1. Dump firmware ROM as a binary file from your SC-55mkII.
 2. Apply this tool to the binary file.
+      The tool updates the ROM's final checksum word after modifying the tone and drum tables so the 16-bit big-endian word sum of the complete ROM is zero. This is required by the T-2 Memory Test.
 3. Program the modified firmware binary to any writable ROM compatible with the original firmware ROM.
 4. Replace the original firmware ROM to the newly programmed ROM.
 
